@@ -62,7 +62,7 @@ const Login = () => {
 					<h2>User: {user.displayName}</h2>
 					<p>Email: {user.email}</p>
 					<img
-						style={{ borderRadius: "50%" }}
+						style={{ borderRadius: "50%", width: "100px" }}
 						src={user.photoURL}
 						alt=""
 					/>
