@@ -1,4 +1,5 @@
 import {
+	GithubAuthProvider,
 	GoogleAuthProvider,
 	getAuth,
 	signInWithPopup,
@@ -10,10 +11,11 @@ import { useState } from "react";
 const Login = () => {
 	const [user, setUser] = useState(null);
 	const auth = getAuth(app);
-	const provider = new GoogleAuthProvider();
+	const googleProvider = new GoogleAuthProvider();
+	const githubProvider = new GithubAuthProvider();
 
 	const handleGoogleSignIn = () => {
-		signInWithPopup(auth, provider)
+		signInWithPopup(auth, googleProvider)
 			.then((result) => {
 				const loggedInUser = result.user;
 				console.log(`user:`, loggedInUser);
@@ -22,6 +24,16 @@ const Login = () => {
 			.catch((error) => {
 				console.error("error", error.message);
 			});
+	};
+
+	const handleGithubSignIn = () => {
+		signInWithPopup(auth, githubProvider)
+			.then((result) => {
+				const loggedUser = result.user;
+				console.log(`loggedUser:`, loggedUser);
+				setUser(loggedUser);
+			})
+			.catch((err) => console.error("err", err));
 	};
 
 	const handleSignOut = () => {
@@ -40,13 +52,17 @@ const Login = () => {
 			{user ? (
 				<button onClick={handleSignOut}>Sign Out</button>
 			) : (
-				<button onClick={handleGoogleSignIn}>Google login</button>
+				<>
+					<button onClick={handleGoogleSignIn}>Google login</button>
+					<button onClick={handleGithubSignIn}>Github Login</button>
+				</>
 			)}
 			{user && (
 				<div>
 					<h2>User: {user.displayName}</h2>
 					<p>Email: {user.email}</p>
 					<img
+						style={{ borderRadius: "50%" }}
 						src={user.photoURL}
 						alt=""
 					/>
